@@ -1,20 +1,19 @@
 package core;
 
 import object.Table;
-
-import java.util.HashMap;
-import java.util.Map;
+import reflection.TableMapResolver;
 
 public class OReM {
 
-    private static final Map<String, Table> tableMap = new HashMap<>();
+    private static final TableMap tableMap;
 
     static {
-        // TODO リフレクションでテーブルを取得できるようにする。
-        tableMap.put("test", new Table());
+        tableMap = new TableMap();
+        TableMapResolver resolver = new TableMapResolver();
+        resolver.run(tableMap);
     }
 
     public static Table getTable(String tableName) {
-        return tableMap.get(tableName);
+        return tableMap.getTable(tableName);
     }
 }
