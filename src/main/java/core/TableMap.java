@@ -1,15 +1,16 @@
 package core;
 
+import com.sun.source.tree.BreakTree;
 import object.Table;
 
-import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class TableMap {
 
-    public Map<String, Table> tableMap;
+    public final Map<String, Table> tableMap;
 
     public TableMap() {
         this.tableMap = new HashMap<>();
@@ -20,9 +21,12 @@ public class TableMap {
     }
 
     public Optional<Table> getTable(final String tableName) {
-        if (this.tableMap.size() == 0 || !this.tableMap.containsKey(tableName)) {
-            return Optional.empty();
-        }
-        return Optional.of(this.tableMap.get(tableName));
+        return checkMap(map -> map.size() == 0 || !map.containsKey(tableName))
+                ? Optional.empty()
+                : Optional.of(tableMap.get(tableName));
+    }
+
+    private boolean checkMap(Predicate<Map<String, Table>> predicate) {
+        return predicate.test(tableMap);
     }
 }
