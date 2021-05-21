@@ -6,16 +6,23 @@ import reflection.TableMapResolver;
 import java.util.NoSuchElementException;
 
 public class OReM {
-
-    private static final TableMap tableMap;
+    private static final OReM oReM;
+    private final TableMap tableMap;
 
     static {
-        tableMap = new TableMap();
+        oReM = new OReM();
+    }
+
+    private OReM() {
+        this.tableMap = new TableMap();
         TableMapResolver resolver = new TableMapResolver();
         resolver.run(tableMap);
     }
 
     public static Table getTable(String tableName) {
-        return tableMap.getTable(tableName).orElseThrow(NoSuchElementException::new);
+        return oReM.tableMap.getTable(tableName).orElseThrow(NoSuchElementException::new);
+    }
+
+    public static void ignoreClasses(String[] classNames) {
     }
 }

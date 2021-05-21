@@ -1,11 +1,11 @@
 package core;
-import static org.junit.jupiter.api.Assertions.*;
-
-import object.Table;
 import org.junit.jupiter.api.Test;
 
 import java.io.InvalidObjectException;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TableMapTest {
 

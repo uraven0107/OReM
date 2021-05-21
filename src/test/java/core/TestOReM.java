@@ -1,11 +1,11 @@
 package core;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import object.Table;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestOReM {
 
@@ -29,5 +29,11 @@ public class TestOReM {
     @Test
     public void notExistTableShouldThrowNoSuchElementException() {
         assertThrows(NoSuchElementException.class, () -> OReM.getTable("NotExist"));
+    }
+
+    @Test
+    public void canRegisterIgnoreClasses() {
+        OReM.ignoreClasses(new String[]{DummyTable.class.getName()});
+        assertDoesNotThrow(() -> OReM.getTable("test"));
     }
 }

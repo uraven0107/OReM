@@ -14,11 +14,13 @@ public class TableMapResolver {
            ClassInfoList classInfos = result.getClassesWithAnnotation(TableAnnotation.class.getName());
            for (ClassInfo classInfo : classInfos) {
                String tableName = this.resolveTableName(classInfo);
-               Table table = this.resolveTableObject(classInfo);
-               tableMap.register(tableName, table);
+               try {
+                   Table table = this.resolveTableObject(classInfo);
+                   tableMap.register(tableName, table);
+               } catch (Exception e) {
+                   System.err.println(e.getMessage());
+               }
            }
-       } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-          e.printStackTrace();
        }
     }
 
@@ -30,7 +32,7 @@ public class TableMapResolver {
 
     private Table resolveTableObject(final ClassInfo classInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (!classInfo.extendsSuperclass(Table.class.getName())) {
-            throw new ClassCastException();
+            throw new ClassCastException(String.format("%s is not extend %s", classInfo.getName(), Table.class.getName()));
         }
         @SuppressWarnings("unchecked")
         Class<Table> tableClass = (Class<Table>)classInfo.loadClass();
