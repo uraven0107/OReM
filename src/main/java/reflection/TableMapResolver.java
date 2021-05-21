@@ -12,22 +12,28 @@ public class TableMapResolver {
    public void run(final TableMap tableMap) {
        try (ScanResult result = new ClassGraph().enableClassInfo().enableAnnotationInfo().scan()) {
            ClassInfoList classInfos = result.getClassesWithAnnotation(TableAnnotation.class.getName());
-           classInfos.forEach(classInfo -> {
-               AnnotationInfo annotationInfo = classInfo.getAnnotationInfo(TableAnnotation.class.getName());
-               AnnotationParameterValueList paramValues = annotationInfo.getParameterValues();
-               String tableName = (String) paramValues.get("name").getValue();
-               // TODO 型のチェックをする
-               @SuppressWarnings("unchecked")
-               Class<Table> tableClass = (Class<Table>)classInfo.loadClass();
-               Table table = null;
-               try {
-                   table = tableClass.getDeclaredConstructor().newInstance();
-               } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                   // TODO 例外処理を考える
-                   e.printStackTrace();
-               }
+           for (ClassInfo classInfo : classInfos) {
+               String tableName = this.resolveTableName(classInfo);
+               Table table = this.resolveTableObject(classInfo);
                tableMap.register(tableName, table);
-           });
+           }
+       } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+          e.printStackTrace();
        }
-   }
+    }
+
+    private String resolveTableName(final ClassInfo classInfo) {
+        AnnotationInfo annotationInfo = classInfo.getAnnotationInfo(TableAnnotation.class.getName());
+        AnnotationParameterValueList paramValues = annotationInfo.getParameterValues();
+        return (String) paramValues.get("name").getValue();
+    }
+
+    private Table resolveTableObject(final ClassInfo classInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (!classInfo.extendsSuperclass(Table.class.getName())) {
+            throw new ClassCastException();
+        }
+        @SuppressWarnings("unchecked")
+        Class<Table> tableClass = (Class<Table>)classInfo.loadClass();
+        return tableClass.getDeclaredConstructor().newInstance();
+    }
 }
