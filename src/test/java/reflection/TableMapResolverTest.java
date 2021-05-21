@@ -2,21 +2,20 @@ package reflection;
 
 import core.TableMap;
 import core.TestTable;
-import object.Table;
+import core.TestTable2;
 import org.junit.jupiter.api.Test;
-
-import java.io.InvalidObjectException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TableMapResolverTest {
 
     @Test
-    public void testInitializeTableMap() throws InvalidObjectException {
+    public void testInitializeTableMap() {
         TableMap tableMap = new TableMap();
         TableMapResolver resolver = new TableMapResolver();
         resolver.run(tableMap);
         assertTrue(tableMap.getTable("test").get() instanceof TestTable);
+        assertTrue(tableMap.getTable("test2").get() instanceof TestTable2);
     }
 
 }
