@@ -3,6 +3,8 @@ package core;
 import object.Table;
 import reflection.TableMapResolver;
 
+import java.util.NoSuchElementException;
+
 public class OReM {
 
     private static final TableMap tableMap;
@@ -14,6 +16,6 @@ public class OReM {
     }
 
     public static Table getTable(String tableName) {
-        return tableMap.getTable(tableName);
+        return tableMap.getTable(tableName).orElseThrow(NoSuchElementException::new);
     }
 }

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import object.Table;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 public class TestOReM {
 
     @Test
@@ -22,5 +24,10 @@ public class TestOReM {
     @Test
     public void testAutoRegisterTable() {
         assertNotEquals(null, OReM.getTable("test"));
+    }
+
+    @Test
+    public void notExistTableShouldThrowNoSuchElementException() {
+        assertThrows(NoSuchElementException.class, () -> OReM.getTable("NotExist"));
     }
 }

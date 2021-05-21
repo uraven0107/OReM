@@ -2,8 +2,10 @@ package core;
 
 import object.Table;
 
+import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class TableMap {
 
@@ -17,7 +19,10 @@ public class TableMap {
         this.tableMap.put(tableName, table);
     }
 
-    public Table getTable(final String tableName) {
-        return this.tableMap.get(tableName);
+    public Optional<Table> getTable(final String tableName) {
+        if (this.tableMap.size() == 0 || !this.tableMap.containsKey(tableName)) {
+            return Optional.empty();
+        }
+        return Optional.of(this.tableMap.get(tableName));
     }
 }
