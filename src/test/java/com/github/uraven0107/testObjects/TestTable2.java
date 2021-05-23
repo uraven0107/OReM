@@ -1,4 +1,4 @@
-package com.github.uraven0107.core;
+package com.github.uraven0107.testObjects;
 
 import com.github.uraven0107.anno.TableAnnotation;
 import com.github.uraven0107.object.Table;

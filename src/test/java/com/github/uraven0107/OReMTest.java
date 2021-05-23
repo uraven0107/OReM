@@ -1,7 +1,7 @@
 package com.github.uraven0107;
 
-import com.github.uraven0107.core.TestTable;
-import com.github.uraven0107.core.TestTable2;
+import com.github.uraven0107.testObjects.TestTable;
+import com.github.uraven0107.testObjects.TestTable2;
 import com.github.uraven0107.object.Table;
 import org.junit.jupiter.api.Test;
 

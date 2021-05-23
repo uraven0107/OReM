@@ -1,8 +1,8 @@
 package com.github.uraven0107.reflection;
 
 import com.github.uraven0107.core.TableMap;
-import com.github.uraven0107.core.TestTable;
-import com.github.uraven0107.core.TestTable2;
+import com.github.uraven0107.testObjects.TestTable;
+import com.github.uraven0107.testObjects.TestTable2;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
