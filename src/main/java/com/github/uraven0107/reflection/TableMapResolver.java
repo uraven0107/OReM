@@ -1,11 +1,9 @@
-package reflection;
+package com.github.uraven0107.reflection;
 
-import anno.TableAnnotation;
-import core.TableMap;
+import com.github.uraven0107.anno.TableAnnotation;
+import com.github.uraven0107.core.TableMap;
+import com.github.uraven0107.object.Table;
 import io.github.classgraph.*;
-import object.Table;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class TableMapResolver {
 
@@ -19,6 +17,7 @@ public class TableMapResolver {
                    tableMap.register(tableName, table);
                } catch (Exception e) {
                    System.err.println(e.getMessage());
+                   tableMap.register(tableName, null);
                }
            }
        }
@@ -30,12 +29,16 @@ public class TableMapResolver {
         return (String) paramValues.get("name").getValue();
     }
 
-    private Table resolveTableObject(final ClassInfo classInfo) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (!classInfo.extendsSuperclass(Table.class.getName())) {
-            throw new ClassCastException(String.format("%s is not extend %s", classInfo.getName(), Table.class.getName()));
+    private Table resolveTableObject(final ClassInfo classInfo) throws Exception {
+        try {
+            if (!classInfo.extendsSuperclass(Table.class.getName())) {
+                throw new ClassCastException(String.format("%s is not extend %s", classInfo.getName(), Table.class.getName()));
+            }
+            @SuppressWarnings("unchecked")
+            Class<Table> tableClass = (Class<Table>)classInfo.loadClass();
+            return tableClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+           throw e;
         }
-        @SuppressWarnings("unchecked")
-        Class<Table> tableClass = (Class<Table>)classInfo.loadClass();
-        return tableClass.getDeclaredConstructor().newInstance();
     }
 }

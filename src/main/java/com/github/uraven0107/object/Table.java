@@ -1,4 +1,4 @@
-package object;
+package com.github.uraven0107.object;
 
 public class Table {
 
